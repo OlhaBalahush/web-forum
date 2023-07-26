@@ -41,8 +41,6 @@ type errResp struct {
 var ServerResp resp
 
 func RenderMainPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello from the serverless function!")
-
 	if r.URL.Path != "/" {
 		RenderErrorPage(w, http.StatusNotFound)
 		return
