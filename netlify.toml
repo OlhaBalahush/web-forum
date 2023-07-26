@@ -1,7 +1,7 @@
 [build]
-  command = "./build.sh"
+  command = "go build ."
   functions = "functions"
-  publish = "app/templates"
+  publish = "templates"
 
 [build.environment]
   GO_IMPORT_PATH = "https://github.com/OlhaBalahush/web-forum"
