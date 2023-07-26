@@ -15,10 +15,10 @@ import (
 )
 
 var templatesMap = map[string]string{
-	"index":          "public/index.html",
-	"postpage":       "public/templates/post.html",
-	"profilepage":    "public/templates/profile.html",
-	"createpostpage": "public/templates/createPost.html",
+	"index":          "../../public/index.html",
+	"postpage":       "../../public/templates/post.html",
+	"profilepage":    "../../public/templates/profile.html",
+	"createpostpage": "../../public/templates/createPost.html",
 }
 
 type resp struct {
@@ -75,7 +75,7 @@ func RenderMainPage(w http.ResponseWriter, r *http.Request) {
 	ServerResp.Posts, ServerResp.Categories = *posts, *categories
 	ServerResp.PostCash = service.Post{}
 
-	template, err := template.ParseFiles("public/index.html")
+	template, err := template.ParseFiles("../../public/index.html")
 	if err != nil {
 		RenderErrorPage(w, http.StatusInternalServerError)
 		return
@@ -120,7 +120,7 @@ func HandlerUpdateFilters(w http.ResponseWriter, r *http.Request) {
 
 	ServerResp.Posts = filteredPosts
 
-	template, err := template.ParseFiles("public/index.html")
+	template, err := template.ParseFiles("../../public/index.html")
 	if err != nil {
 		RenderErrorPage(w, http.StatusInternalServerError)
 		return
@@ -148,7 +148,7 @@ func HandlerFilterCategory(w http.ResponseWriter, r *http.Request) {
 
 	ServerResp.Posts = filteredPosts
 
-	template, err := template.ParseFiles("public/index.html")
+	template, err := template.ParseFiles("../../public/index.html")
 	if err != nil {
 		RenderErrorPage(w, http.StatusInternalServerError)
 		return
@@ -193,7 +193,7 @@ func HandlerSearch(w http.ResponseWriter, r *http.Request) {
 
 	ServerResp.Posts = matchingPosts
 
-	template, err := template.ParseFiles("public/index.html")
+	template, err := template.ParseFiles("../../public/index.html")
 	if err != nil {
 		RenderErrorPage(w, http.StatusInternalServerError)
 		return
@@ -238,7 +238,7 @@ func SortLikesUp(w http.ResponseWriter, r *http.Request) {
 
 	ServerResp.Posts = filteredPosts
 
-	template, err := template.ParseFiles("public/index.html")
+	template, err := template.ParseFiles("../../public/index.html")
 	if err != nil {
 		RenderErrorPage(w, http.StatusInternalServerError)
 		return
@@ -283,7 +283,7 @@ func SortLikesDown(w http.ResponseWriter, r *http.Request) {
 
 	ServerResp.Posts = filteredPosts
 
-	template, err := template.ParseFiles("public/index.html")
+	template, err := template.ParseFiles("../../public/index.html")
 	if err != nil {
 		RenderErrorPage(w, http.StatusInternalServerError)
 		return
@@ -300,7 +300,7 @@ func SortLikesDown(w http.ResponseWriter, r *http.Request) {
 }
 
 func RenderErrorPage(w http.ResponseWriter, statusCode int) {
-	template, err := template.ParseFiles("public/templates/error.html")
+	template, err := template.ParseFiles("../../public/templates/error.html")
 	if err != nil {
 		http.Error(w, fmt.Sprint("Error parsing:", err), statusCode)
 		return

@@ -10,7 +10,7 @@ import (
 )
 
 func routes() http.Handler {
-	fileServer := http.FileServer(http.Dir("./public/static")) //fileServer := http.FileServer(neuteredFileSystem{http.Dir("./static")})
+	fileServer := http.FileServer(http.Dir("../../public/static")) //fileServer := http.FileServer(neuteredFileSystem{http.Dir("./static")})
 	mux := http.NewServeMux()
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 	mux.HandleFunc("/", handlers.RenderMainPage)
