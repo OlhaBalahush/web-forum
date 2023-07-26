@@ -2,7 +2,6 @@
   command = "go build ."
   functions = "functions"
   publish = "templates"
-  publish = "static"
 
 [build.environment]
   GO_IMPORT_PATH = "https://github.com/OlhaBalahush/web-forum"
