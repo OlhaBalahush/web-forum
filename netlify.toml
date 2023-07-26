@@ -1,6 +1,6 @@
 [build]
   command = "./build.sh"
-  functions = "functions"
+  functions = "cmd"
   publish = "public"
 
 [build.environment]
