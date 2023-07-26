@@ -1,5 +1,5 @@
 set -euxo pipefail
 
-mkdir -p "$(pwd)/cmd/gateway"
-GOBIN=$(pwd)/cmd/gateway go install ./...
-chmod +x "$(pwd)"/cmd/gateway/*
+mkdir -p "$(pwd)/functions"
+GOBIN=$(pwd)/functions go install ./...
+chmod +x "$(pwd)"/functions/*
