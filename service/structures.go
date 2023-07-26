@@ -3,7 +3,7 @@ package service
 import (
 	"database/sql"
 	"log"
-	"main/db"
+	"web-forum/db"
 )
 
 type User struct {

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"main/helpers"
 	"os"
+	"web-forum/helpers"
 )
 
 func createTableUsers(db *sql.DB) {

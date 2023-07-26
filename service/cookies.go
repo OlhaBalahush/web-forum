@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"errors"
 	"log"
-	"main/helpers"
 	"net/http"
 	"time"
+	"web-forum/helpers"
 )
 
 func createTableCookies(db *sql.DB) {

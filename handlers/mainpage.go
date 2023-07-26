@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-	"main/service"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
+	"web-forum/service"
 
 	_ "github.com/mattn/go-sqlite3"
 )

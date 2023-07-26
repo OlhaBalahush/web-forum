@@ -1,4 +1,4 @@
-module main
+module web-forum
 
 go 1.18
 

@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-	"main/helpers"
-	"main/service"
 	"net/http"
 	"regexp"
 	"strings"
+	"web-forum/helpers"
+	"web-forum/service"
 )
 
 func SignUp(w http.ResponseWriter, r *http.Request) {

@@ -5,11 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"main/service"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
+	"web-forum/service"
 )
 
 func RenderPostPage(w http.ResponseWriter, r *http.Request) {

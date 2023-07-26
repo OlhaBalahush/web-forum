@@ -2,11 +2,11 @@ package middleware
 
 import (
 	"log"
-	"main/handlers"
 	"net"
 	"net/http"
 	"sync"
 	"time"
+	"web-forum/handlers"
 )
 
 type Limiter struct {

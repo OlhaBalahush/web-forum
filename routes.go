@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"main/handlers"
-	mw "main/middleware"
 	"net/http"
 	"path/filepath"
+	"web-forum/handlers"
+	mw "web-forum/middleware"
 )
 
 func routes() http.Handler {

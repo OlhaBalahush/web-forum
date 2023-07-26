@@ -5,11 +5,11 @@ import (
 	"errors"
 	"io/ioutil"
 	"log"
-	"main/helpers"
 	"net/http"
 	"os"
 	"path/filepath"
 	"time"
+	"web-forum/helpers"
 )
 
 var (

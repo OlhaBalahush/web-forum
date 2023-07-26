@@ -2,7 +2,7 @@ package db
 
 import (
 	"database/sql"
-	"main/helpers"
+	"web-forum/helpers"
 
 	_ "github.com/mattn/go-sqlite3"
 )

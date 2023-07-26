@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"main/service"
 	"net/http"
+	"web-forum/service"
 
 	_ "github.com/mattn/go-sqlite3"
 	"golang.org/x/oauth2"
