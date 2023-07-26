@@ -5,11 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"main/service"
 	"net/http"
 	"os"
 	"strings"
 	"time"
+	"web-forum/service"
 )
 
 func RenderProfilePage(w http.ResponseWriter, r *http.Request) {
