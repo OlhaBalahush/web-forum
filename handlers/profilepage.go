@@ -9,7 +9,8 @@ import (
 	"os"
 	"strings"
 	"time"
-	"web-forum/service"
+
+	"01.kood.tech/git/Olya/forum-moderation.git/service"
 )
 
 func RenderProfilePage(w http.ResponseWriter, r *http.Request) {

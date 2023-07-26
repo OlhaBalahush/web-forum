@@ -8,7 +8,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"web-forum/service"
+
+	"01.kood.tech/git/Olya/forum-moderation.git/service"
 
 	_ "github.com/mattn/go-sqlite3"
 )

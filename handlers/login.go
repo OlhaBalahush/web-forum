@@ -7,8 +7,9 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
-	"web-forum/helpers"
-	"web-forum/service"
+
+	"01.kood.tech/git/Olya/forum-moderation.git/helpers"
+	"01.kood.tech/git/Olya/forum-moderation.git/service"
 )
 
 func SignUp(w http.ResponseWriter, r *http.Request) {

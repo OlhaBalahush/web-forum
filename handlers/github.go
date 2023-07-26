@@ -7,7 +7,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"web-forum/service"
+
+	"01.kood.tech/git/Olya/forum-moderation.git/service"
 
 	"golang.org/x/oauth2"
 )

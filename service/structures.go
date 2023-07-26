@@ -3,7 +3,8 @@ package service
 import (
 	"database/sql"
 	"log"
-	"web-forum/db"
+
+	"01.kood.tech/git/Olya/forum-moderation.git/db"
 )
 
 type User struct {

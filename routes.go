@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"path/filepath"
-	"web-forum/handlers"
-	mw "web-forum/middleware"
+
+	"01.kood.tech/git/Olya/forum-moderation.git/handlers"
+	mw "01.kood.tech/git/Olya/forum-moderation.git/middleware"
 )
 
 func routes() http.Handler {

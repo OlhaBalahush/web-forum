@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"sync"
 	"time"
-	"web-forum/handlers"
+
+	"01.kood.tech/git/Olya/forum-moderation.git/handlers"
 )
 
 type Limiter struct {

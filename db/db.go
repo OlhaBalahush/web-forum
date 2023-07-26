@@ -2,7 +2,8 @@ package db
 
 import (
 	"database/sql"
-	"web-forum/helpers"
+
+	"01.kood.tech/git/Olya/forum-moderation.git/helpers"
 
 	_ "github.com/mattn/go-sqlite3"
 )

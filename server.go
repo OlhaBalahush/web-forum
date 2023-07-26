@@ -3,7 +3,8 @@ package main
 import (
 	"crypto/tls"
 	"log"
-	"web-forum/helpers"
+
+	"01.kood.tech/git/Olya/forum-moderation.git/helpers"
 
 	"net/http"
 	"time"

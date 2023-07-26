@@ -9,7 +9,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"web-forum/service"
+
+	"01.kood.tech/git/Olya/forum-moderation.git/service"
 )
 
 func RenderPostPage(w http.ResponseWriter, r *http.Request) {

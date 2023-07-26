@@ -6,7 +6,8 @@ import (
 	"log"
 	"net/http"
 	"time"
-	"web-forum/helpers"
+
+	"01.kood.tech/git/Olya/forum-moderation.git/helpers"
 )
 
 func createTableCookies(db *sql.DB) {

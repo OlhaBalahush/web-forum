@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"web-forum/helpers"
+
+	"01.kood.tech/git/Olya/forum-moderation.git/helpers"
 )
 
 func createTableUsers(db *sql.DB) {
