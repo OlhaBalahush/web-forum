@@ -1,0 +1,419 @@
+#main-part-post-page {
+    flex: 1;
+    height: auto;
+    background-color: var(--color-1);
+    display: flex;
+    flex-direction: column;
+}
+
+#post {
+    width: 100%;
+}
+
+#post-container {
+    margin-top: 90px;
+    height: auto;
+    width: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    justify-content: flex-start;
+}
+
+#post-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    background-color: var(--color-3);
+    width: 100%;
+    height: 300px;
+}
+
+#post-image img {
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: contain;
+}
+
+#btn-post-creator {
+    margin-left: 20px;
+}
+
+#comments-container {
+    margin-left: 20%;
+    margin-right: 20%;
+    width: auto;
+    height: 100%;
+
+    background-color: var(--color-1);
+    border-style: none;
+    border-top-style: solid;
+    border-width: 1px;
+    border-color: var(--color-3);
+
+    display: block;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: right;
+}
+
+#already-existed-comments {
+    min-height: 0;
+}
+
+#btn-comment-creator {
+    margin-left: 30px;
+    border: none;
+    background-color: transparent;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    color: var(--color-3);
+    font-size: var(--main-text-font-size);
+    font-family: var(--main-text);
+    text-transform: uppercase;
+
+    letter-spacing: -0.075em;
+}
+
+#btn-comment-creator:hover {
+    color: var(--color-5);
+}
+
+#btn-comment-creator:active {
+    color: var(--color-4);
+}
+
+.comment-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-like-dislike-comment {
+    margin-right: 30px;
+    margin-bottom: 10px;
+
+    display: flex;
+    left: 20%;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    font-family: var(--main-text);
+    font-size: var(--additional-text-font-size);
+    color: var(--color-3);
+}
+
+.comment-container {
+    margin-top: 20px;
+}
+
+.comment {
+    margin: 5px 0;
+    width: 100%;
+    background-color: var(--color-5);
+    min-height: 57px;
+
+    border-radius: 60px;
+
+    color: var(--color-1);
+    font-family: var(--main-text);
+    font-size: var(--main-text-font-size);
+    text-align: left;
+
+    display: flex;
+    align-items: center;
+
+    border-style: none;
+}
+
+.comment-text {
+    width: 85%;
+    padding: 10px;
+    padding-right: 30px;
+    padding-left: 30px;
+    word-wrap: break-word;
+}
+
+.comment-created-at {
+    margin: 0;
+    margin-right: 30px;
+    font-family: var(--main-text);
+    color: var(--color-2);
+    font-size: var(--additional-text-font-size);
+    text-transform: uppercase;
+}
+
+#comment-form {
+    background-color: var(--color-1);
+    position: sticky;
+    bottom: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    width: 100%;
+}
+
+#post-title {
+    width: auto;
+    height: auto;
+    margin-left: 20%;
+    margin-right: 20%;
+    text-align: left;
+    font-size: 80px;
+    word-wrap: break-word;
+
+    font-family: var(--title-text);
+}
+
+.post-addiional-information {
+    margin: 5px;
+    margin-left: 20%;
+    margin-right: 20%;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    color: var(--color-3);
+    font-size: var(--main-text-font-size);
+    font-family: var(--main-text);
+    text-transform: uppercase;
+}
+
+.about-creation {
+    font-size: var(--additional-text-font-size);
+}
+
+#btn-category-icon {
+    background-color: var(--color-4);
+    color: var(--color-1);
+
+    font-family: var(--main-text);
+    font-size: var(--main-text-font-size);
+    letter-spacing: -0.075em;
+    text-transform: uppercase;
+
+    border: none;
+    border-radius: 60px;
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+#btn-category-icon:hover {
+    background-color: var(--color-5);
+}
+
+#btn-post-creator {
+    margin-left: 30px;
+    border: none;
+    background-color: transparent;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    color: var(--color-3);
+    font-size: var(--main-text-font-size);
+    font-family: var(--main-text);
+    text-transform: uppercase;
+
+    letter-spacing: -0.075em;
+}
+
+.btn-user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: var(--color-3);
+}
+
+.btn-user:hover {
+    color: var(--color-4);
+}
+
+.btn-user:hover .user-icon {
+    width: 45px;
+    height: 45px;
+}
+
+#span-created-at {
+    margin: 0;
+    margin-left: 30px;
+}
+
+#post-text {
+    width: auto;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    height: auto;
+    text-align: left;
+    font-size: var(--main-text-font-size);
+    font-family: var(--main-text);
+    word-wrap: break-word;
+}
+
+#btn-comments {
+    padding: 0;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background-color: var(--color-1);
+
+    border-style: none;
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: var(--color-3);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    z-index: 997;
+}
+
+#btn-comments:hover {
+    background-color: var(--color-4);
+    color: var(--color-1);
+}
+
+#btn-comments:active {
+    background-color: var(--color-5);
+    color: var(--color-1);
+}
+
+#span-comments {
+    position: absolute;
+    left: 40px;
+    font-family: var(--main-text);
+    font-size: var(--main-text-font-size);
+    text-transform: uppercase;
+}
+
+#icon-plus {
+    position: absolute;
+    right: 80px;
+    font-size: 30px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#btn-like-dislike {
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-bottom: 30px;
+    padding-top: 30px;
+
+    display: flex;
+    left: 20%;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+    border-top: 1px solid var(--color-3);
+
+    font-family: var(--main-text);
+    font-size: var(--main-text-font-size);
+    color: var(--color-3);
+}
+
+.likes-dislikes-container {
+    display: flex;
+    align-items: center;
+}
+
+.likes-dislikes {
+    width: auto;
+    height: auto;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    margin: 0 10px;
+}
+
+.likes-dislikes-container label {
+    margin: 0;
+}
+
+.icon {
+    width: 21px;
+    height: 21px;
+}
+
+/* #region dropdown button */
+
+.edit-delete-popup{
+    position: absolute;
+    right: 0;
+    top: 39px;
+    left: auto;
+    width: 100px;
+    transform: none;
+    border-radius: 15px;
+}
+
+.btn-edit, .btn-delete, .btn-report{
+    font-size: var(--additional-text-font-size);
+    width: 100%;
+}
+
+.bar {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--color-3);
+    margin: 3px 0;
+}
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: transparent;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover .bar,
+.dropbtn:focus .bar{
+    background-color: var(--color-2);
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+    display: block;
+}
+
+.postedit {
+    margin-left: auto;
+    order: 2;
+}
+
+/* #endregion */

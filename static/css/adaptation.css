@@ -1,0 +1,292 @@
+@media only screen and (max-width: 1080px) {
+    #btn-home {
+        left: 20px;
+    }
+
+    #btn-my-profile,
+    #btn-sign-up {
+        right: 20px;
+    }
+
+    #btn-log-in {
+        right: 135px;
+    }
+
+    #btn-notifications {
+        right: 180px;
+    }
+
+    #title {
+        margin-top: 60px;
+        font-size: 35px;
+    }
+
+    #input-line {
+        width: 320px;
+        height: 30px;
+
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    #search-categories-filter {
+        padding-top: 10px;
+    }
+
+    #btn-category,
+    #input-line,
+    #btn-post-category,
+    #btn-all-categories {
+        font-size: var(--main-text-font-size-adapted);
+    }
+
+    .content,
+    #user-information {
+        justify-content: space-evenly;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    #user-additional {
+        margin: 30px;
+        margin-top: 200px;
+        margin-bottom: 10px;
+        width: auto;
+        min-height: auto;
+    }
+
+    #btn-save {
+        justify-content: center;
+    }
+
+    #post-title {
+        margin-top: 15px;
+        font-size: var(--title-text-font-size-adapted);
+    }
+
+    .post-addiional-information,
+    #btn-category-icon,
+    #post-text,
+    #lb-like,
+    #lb-dislike{
+        font-size: var(--main-text-font-size-adapted);
+    }
+
+    #comments-container,
+    #post-title,
+    .post-addiional-information,
+    #post-text,
+    #btn-like-dislike,
+    #btn-like-dislike {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    #post-creator-image-container {
+        width: 20px;
+        height: 20px;
+    }
+
+    #post-creator-image-container img {
+        max-width: 20px;
+        max-height: 20px;
+    }
+
+    .popup {
+        width: 320px;
+        font-size: var(--main-text-font-size-adapted);
+    }
+
+    .edit-delete-popup {
+        width: 100px;
+    }
+
+    .title-for-popups {
+        font-size: var(--title-text-font-size-adapted);
+    }
+
+    #user-basic {
+        left: 5%;
+    }
+
+    #btn-filter img {
+        width: 15px;
+        height: 15px;
+    }
+
+    #category-container {
+        width: 250px;
+    }
+
+    #comment-input,
+    #comment-input::placeholder,
+    #btn-comment-creator,
+    .comment-text,
+    .comment-created-at,
+    #input-line::placeholder {
+        font-size: var(--main-text-font-size-adapted);
+    }
+
+    #comment-form {
+        min-height: 57px;
+        height: fit-content;
+    }
+
+    #span-comments {
+        font-size: var(--button-text-font-size-adapted);
+        left: 20px;
+    }
+
+    .lb-comment {
+        font-size: var(--button-text-font-size-adapted);
+    }
+
+    .comment {
+        min-height: 40px;
+    }
+
+    #icon-plus {
+        right: 40px;
+    }
+
+    #user-additional,
+    .post-label {
+        font-size: var(--button-text-font-size-adapted);
+    }
+
+    #username {
+        font-size: var(--title-text-font-size-adapted);
+    }
+
+    .create-post-input {
+        font-size: var(--main-text-font-size-adapted);
+    }
+
+    .short-post-text,
+    .user-data-container {
+        font-size: var(--main-text-font-size-adapted);
+    }
+
+    #small-post-title,
+    #likes-dislikes span,
+    #create-about-input {
+        font-size: var(--button-text-font-size-adapted);
+    }
+
+    #likes-dislikes img {
+        width: 15px;
+        height: 15px;
+    }
+
+    .error {
+        font-size: 300px;
+    }
+
+    #forum-logo {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    #contact-info {
+        margin-left: 5px;
+    }
+
+    #about {
+        margin-right: 5px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+
+    footer,
+    footer div p {
+        font-size: 10px;
+    }
+
+    .footer-titles {
+        font-size: var(--main-text-font-size-adapted);
+    }
+
+    footer div {
+        margin: 10px 20px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+
+    #post-creator,
+    #span-created-at {
+        margin: 0;
+    }
+
+    .post-addiional-information {
+        justify-content: space-between;
+    }
+
+    #post-image {
+        height: 200px;
+    }
+
+    #post-image img {
+        max-height: 200px;
+    }
+
+    #lb-dislike::before,
+    #lb-like::before {
+        width: 17px;
+        height: 16px;
+    }
+
+    #lb-like,
+    #lb-dislike {
+        position: relative;
+        padding-left: 25px;
+    }
+
+    #btn-like-dislike {
+        margin-bottom: 15px;
+        padding-top: 15px;
+    }
+
+    #user-information {
+        width: 325px;
+    }
+
+    #user-basic {
+        left: calc(50% - 325px/2);
+    }
+
+    .button {
+        font-size: var(--button-text-font-size-adapted);
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    #btn-log-in {
+        right: 100px;
+    }
+
+    #btn-notifications {
+        right: 150px;
+    }
+
+    .likes-dialikes-numbers {
+        font-size: var(--main-text-font-size-adapted);
+    }
+
+    .likes-dislikes img {
+        width: 15px;
+        height: 15px;
+    }
+
+    #btn-my-profile {
+        font-size: var(--button-text-font-size-adapted);
+    }
+
+    .error {
+        font-size: 150px;
+    }
+}

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/basic.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/profile-page.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/adaptation.css" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
+    <link rel="icon" type="image/x-icon" href="/static/materials/favicon.ico">
+    <title>FORUM</title>
+</head>
+
+<body>
+    <header>
+        <button id="btn-home" onclick="onHomeButton()">
+            <img id="logo" src="/static/materials/logo.svg">
+        </button>
+
+        {{ if eq .CurrentUser.Name "" }}
+        <button id="btn-log-in" class="button" onclick="onPopup('log-in-popup')">
+            <span>log in</span>
+        </button>
+        <button id="btn-sign-up" class="button" onclick="onPopup('sign-up-popup')">
+            <span>sign up</span>
+        </button>
+        {{else}}
+
+        <button id="btn-notifications" onclick="onPopup('notifications-popup')">
+            <img src="/static/materials/notification.svg">
+
+            {{ if ne (len .CurrentUser.NewNotifications) 0 }}
+            <div id="messages-counter">
+                <span>{{ len .CurrentUser.NewNotifications }}</span>
+            </div>
+            {{ end }}
+        </button>
+
+        <a href="/profilepage/{{.CurrentUser.Name}}" id="btn-my-profile">
+            <div class="container-btn-my-profile-icon">
+                <img id="btn-my-profile-icon" {{ if .CurrentUser.ImagePath }} src="/{{ .CurrentUser.ImagePath }}" {{
+                    else }} src="/static/materials/user-image.svg" {{ end }}>
+            </div>
+            <span>my profile</span>
+        </a>
+        {{end}}
+    </header>
+
+    <!-- #region popups -->
+    <!-- #region authorization popups -->
+    <div id="gray-screen" class="gray-screen" {{ if ne .Err.ErrorCode 0 }} style="display: block;" {{ end }}></div>
+
+    <div id="sign-up-popup" class="popup" {{ if or (eq .Err.ErrorCode 3) (eq .Err.ErrorCode 1) }}
+        style="display: block;" {{ end }}>
+        <p class="title-for-popups">sign up to forum</p>
+        <form class="sign-up-log-in-form" action="/sign-up" method="POST">
+            <label for="username-sign-up">Username:</label>
+            <input class="form-input" type="text" id="username-sign-up" name="username-sign-up" required>
+            <label for="email-address-sign-up">email address:</label>
+            <input class="form-input" type="email" id="email-address-sign-up" name="email-address-sign-up" required>
+            <label for="password-sign-up">Password:</label>
+            <input class="form-input" type="password" id="password-sign-up" name="password-sign-up" required>
+
+            {{ if and (ne .Err nil) (eq .Err.ErrorCode 1) }}
+            <span class="authorization-error">{{ .Err.Message }}</span>
+            {{ end }}
+
+            <div class="google-github">
+                <a href="/google/login/"><img width="40" height="40" src="/static/materials/google-icon.svg"></img></a>
+                <a href="/github/login/"><img width="40" height="40" src="/static/materials/github-icon.svg"></img></a>
+            </div>
+
+            <button id="btn-apply-sign-up" class="button" type="submit">
+                <span>sign up</span>
+            </button>
+        </form>
+
+        <a href="/profilepage/{{.User.Name}}" id="btn-cancel-sign-up" class="button"><span>cancel</span></a>
+    </div>
+
+    <div id="log-in-popup" class="popup" {{ if and (ne .Err nil) (eq .Err.ErrorCode 2) }} style="display: block;" {{ end
+        }}>
+        <p class="title-for-popups">log in to forum</p>
+        <form class="sign-up-log-in-form" action="/log-in" method="POST">
+            <label for="email-address-log-in">email address:</label>
+            <input class="form-input" type="email" id="email-address-log-in" name="email-address-log-in" required>
+            <label for="password-log-in">Password:</label>
+            <input class="form-input" type="password" id="password-log-in" name="password-log-in" required>
+
+            {{ if and (ne .Err nil) (eq .Err.ErrorCode 2) }}
+            <span class="authorization-error">{{ .Err.Message }}</span>
+            {{ end }}
+
+            <div class="google-github">
+                <a href="/google/login/"><img width="40" height="40" src="/static/materials/google-icon.svg"></img></a>
+                <a href="/github/login/"><img width="40" height="40" src="/static/materials/github-icon.svg"></img></a>
+            </div>
+            <button id="btn-apply-log-in" class="button" type="submit">
+                <span>log in</span>
+            </button>
+        </form>
+        <a href="/profilepage/{{.User.Name}}" id="btn-cancel-log-in" class="button"><span>cancel</span></a>
+    </div>
+    <!-- #endregion -->
+
+    <div id="notifications-popup" class="popup popup-scroller">
+        <p id="notifications-title" class="title-for-popups">notifications</p>
+
+        {{ if and (eq (len .CurrentUser.ReadedNotifications) 0) (eq (len .CurrentUser.NewNotifications) 0) }}
+        <p class="notification-titles">You have no notification yet.</p>
+        {{ end }}
+
+
+        {{ if ne (len .CurrentUser.NewNotifications) 0 }}
+        <p class="notification-titles">New</p>
+        {{ end }}
+
+        {{ range .CurrentUser.NewNotifications }}
+        {{ if eq .Action "request" }}
+        <button class="notification" onclick="onRequest()">
+            <a href="/profilepage/{{ .WhoDid.Name }}">{{ .WhoDid.Name }}</a>
+            {{ .Action }} {{.Message}}
+            <a href="/notification/{{ .PostID }}/{{ .Id }}">{{ .PostTitle }}</a>
+        </button>
+
+        <!-- TODO open input if user click on the button -->
+        <form id="response-form" action="/response/{{.Id}}" method="post" style="display: none;">
+            <input id="add-response" class="response-input" type="text" name="response" placeholder="Write response..."
+                maxlength="500" required />
+        </form>
+
+        {{ else }}
+        <p class="notification"> <a href="/profilepage/{{ .WhoDid.Name }}">{{ .WhoDid.Name }}</a>
+            {{ .Action }} {{.Message}}
+            <a href="/notification/{{ .PostID }}/{{ .Id }}">{{ .PostTitle }}</a>
+        </p>
+        {{ end }}
+        {{ end }}
+
+        {{ if ne (len .CurrentUser.ReadedNotifications) 0 }}
+        <p class="notification-titles">Older</p>
+        {{ end }}
+
+        {{ range .CurrentUser.ReadedNotifications}}
+        <p class="notification"> <a href="/profilepage/{{ .WhoDid.Name }}">{{ .WhoDid.Name }}</a>
+            {{ .Action }} {{.Message}}
+            <a href="/notification/{{ .PostID }}/{{ .Id }}">{{ .PostTitle }}</a>
+        </p>
+        {{ end }}
+    </div>
+
+    <!-- #endregion -->
+
+    <div id="main-part-profile-page">
+        <div id="user-information">
+            <div id="user-basic">
+                <form action="/update-user-img" method="POST" enctype="multipart/form-data">
+                    <div class="user-image">
+                        <label for="image-upload">
+                            <img id="user-base-image" {{ if .User.ImagePath }} src="/{{ .User.ImagePath }}" {{ else }}
+                                src="/static/materials/user-image.svg" {{ end }}>
+                            {{ if eq .CurrentUser.Name .User.Name }}
+                            <div id="gray-background"></div>
+                            <img id="user-hover-image" src="/static/materials/camera.svg">
+                            {{end}}
+                        </label>
+                        {{ if eq .CurrentUser.Name .User.Name }}
+                        <input id="image-upload" type="file" name="attachment" style="display:none;"
+                            onchange="form.submit()">
+                        {{ end }}
+                    </div>
+                </form>
+                <span id="username">{{.User.Name}}</span>
+            </div>
+            <div id="user-additional">
+                <p>about</p>
+                <div id="already-created-about">{{.User.About}}</div>
+                <form id="edit-about" action="/update-profile" method="POST" enctype="multipart/form-data">
+                    <textarea id="create-about-input" type="text" name="create-about-input" rows="6" cols="50"
+                        placeholder="Write here your about" required>{{.User.About}}</textarea>
+                    <div id="btn-save">
+                        <button id="btn-update-profile-submit" class="button" type="submit">
+                            <span>save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div id="profile-buttons">
+                {{ if eq .CurrentUser.Name .User.Name }}
+                <form action="/log-out" method="GET">
+                    <button id="btn-log-out" class="button">
+                        <span>log out</span>
+                        <!-- when user log out, CurrentUser have to be nil -->
+                    </button>
+                </form>
+                <button id="btn-update-profile" class="button" onclick="onEditButton()">
+                    <span>edit</span>
+                </button>
+                {{end}}
+                <button id="btn-cancel-updation" class="button" onclick="onEditButton()">
+                    <span>cancel</span>
+                </button>
+
+                {{ if eq .CurrentUser.Role 3 }}
+                <form action="/de-promote-user" method="GET">
+                    <button id="btn-promote-user" class="button">
+                        {{ if eq .User.Role 1}}
+                        <span>promote</span>
+                        {{ else if eq .User.Role 2}}
+                        <span>demote</span>
+                        {{end}}
+                    </button>
+                </form>
+                {{ else }}
+                <!-- request -->
+                {{ if eq .CurrentUser.Name .User.Name }}
+                <form action="/request-moderator" method="GET">
+                    <button id="btn-request-moderator" class="button">
+                        {{ if and (eq .User.Request 0) (eq .User.Role 1)}}
+                        <span>request for moderator</span>
+                        {{ else if or (eq .User.Request 1) (eq .User.Role 2)}}
+                        <span>cancel request</span>
+                        {{ end }}
+                    </button>
+                </form>
+                {{ end }}
+                {{ end }}
+            </div>
+        </div>
+
+        <div id="buttons">
+            <button id="btn-user-posts" class="profile-buttons  profile-buttons-chosen">My posts</button>
+            <button id="btn-user-liked-disliked-posts" class="profile-buttons">Liked/disliked posts</button>
+            <button id="btn-user-commented-posts" class="profile-buttons">Comments posts</button>
+        </div>
+
+        <div id="user-posts" class="content">
+            <!-- button add post -->
+            {{ if eq .CurrentUser.Name .User.Name }}
+            <a href="/createpostpage/{{.CurrentUser.Name}}" id="btn-add-post" class="post">
+                <div class="post-picture">
+                    <div class="plus radius"></div>
+                </div>
+                <div class="post-main-information">
+                    <span id="small-post-title" class="title">Create post</span>
+                </div>
+            </a>
+            {{end}}
+
+            {{ range .User.Posts }}
+            <a href="/postpage/{{.Id}}" class="post">
+                <div class="shadow-for-button">
+                    <span class="short-post-text">{{.Text}}</span>
+                    <div class="user-data-container">
+                        <div class="user-container">
+                            <div id="post-creator-image-container">
+                                <img {{ if .Creator.ImagePath }} src="/{{ .Creator.ImagePath }}" {{ else }}
+                                    src="/static/materials/user-image.svg" {{ end }}>
+                            </div>
+                            <span>{{.Creator.Name}}</span>
+                        </div>
+                        <p class="created-at">{{.CreatedAt}}</p>
+                    </div>
+                </div>
+                <div class="post-picture">
+                    {{ if .ImagePath }}
+                    <img id="post-image-exists" src="/{{ .ImagePath }}">
+                    {{ else }}
+                    <img id="post-image-holder" src="/static/materials/logo.svg">
+                    {{ end }}
+                </div>
+                <div class="post-main-information">
+                    <span id="small-post-title" class="title">{{ .Title }}</span>
+                    <div id="likes-dislikes">
+                        <img src="/static/materials/filled-like-icon.svg">
+                        <span class="likes-dialikes-numbers">{{.Likes}}</span>
+                        <img src="/static/materials/filled-dislike-icon.svg">
+                        <span class="likes-dialikes-numbers">{{.Dislikes}}</span>
+                    </div>
+                </div>
+            </a>
+            {{ end }}
+
+            {{ if eq (len .User.Posts) 0 }}
+            <span class="no-posts-message">no posts have been created yet</span>
+            {{end}}
+        </div>
+
+        <div id="user-liked-disliked-posts" class="content">
+            {{ range .LikedDislikedByCurrUser }}
+            <a href="/postpage/{{.Id}}" class="post">
+                <div class="shadow-for-button">
+                    <span class="short-post-text">{{.Text}}</span>
+                    <div class="user-data-container">
+                        <div class="user-container">
+                            <div id="post-creator-image-container">
+                                <img {{ if .Creator.ImagePath }} src="/{{ .Creator.ImagePath }}" {{ else }}
+                                    src="/static/materials/user-image.svg" {{ end }}>
+                            </div>
+                            <span>{{.Creator.Name}}</span>
+                        </div>
+                        <p class="created-at">{{.CreatedAt}}</p>
+                    </div>
+                </div>
+                <div class="post-picture">
+                    {{ if .ImagePath }}
+                    <img id="post-image-exists" src="/{{ .ImagePath }}">
+                    {{ else }}
+                    <img id="post-image-holder" src="/static/materials/logo.svg">
+                    {{ end }}
+                </div>
+                <div class="post-main-information">
+                    <span id="small-post-title" class="title">{{ .Title }}</span>
+                    <div id="likes-dislikes">
+                        <img src="/static/materials/filled-like-icon.svg">
+                        <span class="likes-dialikes-numbers">{{.Likes}}</span>
+                        <img src="/static/materials/filled-dislike-icon.svg">
+                        <span class="likes-dialikes-numbers">{{.Dislikes}}</span>
+                    </div>
+                </div>
+            </a>
+            {{ end }}
+
+            {{ if eq (len .LikedDislikedByCurrUser) 0 }}
+            <span class="no-posts-message">no posts have been liked or disliked yet</span>
+            {{end}}
+        </div>
+
+        <div id="user-commented-posts" class="content">
+            {{ range .CommentsByCurrUser }}
+            <a href="/postpage/{{.Post.Id}}" class="post">
+                <div class="shadow-for-button">
+                    <span class="short-post-text">{{.Post.Text}}</span>
+                    <span class="short-post-text">{{.Creator.Name}}: {{.Text}}</span>
+                    <div class="user-data-container">
+                        <div class="user-container">
+                            <div id="post-creator-image-container">
+                                <img {{ if .Post.Creator.ImagePath }} src="/{{ .Post.Creator.ImagePath }}" {{ else }}
+                                    src="/static/materials/user-image.svg" {{ end }}>
+                            </div>
+                            <span>{{.Post.Creator.Name}}</span>
+                        </div>
+                        <p class="created-at">{{.Post.CreatedAt}}</p>
+                    </div>
+                </div>
+                <div class="post-picture">
+                    {{ if .Post.ImagePath }}
+                    <img id="post-image-exists" src="/{{ .Post.ImagePath }}">
+                    {{ else }}
+                    <img id="post-image-holder" src="/static/materials/logo.svg">
+                    {{ end }}
+                </div>
+                <div class="post-main-information">
+                    <span id="small-post-title" class="title">{{ .Post.Title }}</span>
+                    <div id="likes-dislikes">
+                        <img src="/static/materials/filled-like-icon.svg">
+                        <span class="likes-dialikes-numbers">{{.Post.Likes}}</span>
+                        <img src="/static/materials/filled-dislike-icon.svg">
+                        <span class="likes-dialikes-numbers">{{.Post.Dislikes}}</span>
+                    </div>
+                </div>
+            </a>
+            {{ end }}
+
+            {{ if eq (len .CommentsByCurrUser) 0 }}
+            <span class="no-posts-message">no posts have been commented yet</span>
+            {{end}}
+        </div>
+    </div>
+
+    <footer>
+        <div id="about">
+            <svg id="forum-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 71.94 21.69">
+                <path d="M2.55,21.69H0V0H18.69V2.27H2.55V9.44h8.79v2.29H2.55Z" />
+                <path
+                    d="M28.43,10.86a13.43,13.43,0,0,1-.68,4.36,10,10,0,0,1-2,3.42,8.82,8.82,0,0,1-3.06,2.25,9.75,9.75,0,0,1-4,.8,10.15,10.15,0,0,1-4.11-.8,8.77,8.77,0,0,1-3.07-2.25,9.77,9.77,0,0,1-1.92-3.42A13.43,13.43,0,0,1,9,10.86a13.32,13.32,0,0,1,.69-4.38A10.2,10.2,0,0,1,11.6,3.05,8.67,8.67,0,0,1,14.66.81a9.74,9.74,0,0,1,4-.81,9.92,9.92,0,0,1,4.09.81,8.67,8.67,0,0,1,3.06,2.24,9.82,9.82,0,0,1,1.92,3.43A13.59,13.59,0,0,1,28.43,10.86Zm-2.53,0a11.45,11.45,0,0,0-.56-3.72,7.43,7.43,0,0,0-1.52-2.68,6.4,6.4,0,0,0-2.29-1.64,7.58,7.58,0,0,0-5.67,0,6.4,6.4,0,0,0-2.29,1.64A7.59,7.59,0,0,0,12,7.14a11.46,11.46,0,0,0-.55,3.72,11.26,11.26,0,0,0,.56,3.71,8,8,0,0,0,1.53,2.68,6.37,6.37,0,0,0,2.29,1.63,7.47,7.47,0,0,0,2.86.54,7.3,7.3,0,0,0,2.82-.54,6.48,6.48,0,0,0,2.27-1.63,7.52,7.52,0,0,0,1.52-2.68A11.26,11.26,0,0,0,25.9,10.86Z" />
+                <path
+                    d="M28.43,12.64v9.05H25.88V.39H31.3a22.09,22.09,0,0,1,2.33.1,12,12,0,0,1,1.76.32,6.26,6.26,0,0,1,3.34,2,5.4,5.4,0,0,1,1,3.56,6,6,0,0,1-.26,2.27,5.33,5.33,0,0,1-1.15,1.74,5.91,5.91,0,0,1-1.75,1.2,9.65,9.65,0,0,1-2.28.69v.06l7.6,7.29H39.35l-7.84-7Zm0-10v7.65h2.51c.79,0,1.45,0,2-.07A7.57,7.57,0,0,0,34.43,10a4.12,4.12,0,0,0,2-1.29,3.66,3.66,0,0,0,.71-2.33,3.38,3.38,0,0,0-.68-2.16A3.72,3.72,0,0,0,34.65,3a6.65,6.65,0,0,0-1.35-.25,18.18,18.18,0,0,0-2-.08Z" />
+                <path
+                    d="M45.35,19.42a7.28,7.28,0,0,0,2-.26,5,5,0,0,0,1.54-.75A4.54,4.54,0,0,0,50,17.24a5.59,5.59,0,0,0,.67-1.51,7,7,0,0,0,.22-1.14c0-.43.06-.83.06-1.23V.39h2.55V13.3c0,.49,0,1-.08,1.53a10.61,10.61,0,0,1-.25,1.48,8.12,8.12,0,0,1-.89,2.14,6,6,0,0,1-1.55,1.71,7.3,7.3,0,0,1-2.29,1.12,10.8,10.8,0,0,1-3.13.41,10.93,10.93,0,0,1-3-.38,7.12,7.12,0,0,1-2.22-1,5.85,5.85,0,0,1-1.53-1.57,8.1,8.1,0,0,1-.92-2A9.32,9.32,0,0,1,37.3,15a14.75,14.75,0,0,1-.11-1.73V6.52h2.55v6.84a10.4,10.4,0,0,0,.1,1.45,7.42,7.42,0,0,0,.32,1.35A4.85,4.85,0,0,0,42,18.55,5.87,5.87,0,0,0,45.35,19.42Z" />
+                <path
+                    d="M62,21.3H60.87L55.6,8.81q-1.1-2.58-2.19-5.61h-.12c.14,2.91.22,5.57.22,8H51V.39h3.67l4.92,11.83c.57,1.35,1.18,3,1.86,4.89h.08q1.13-3.16,1.86-4.89L68.27.39h3.67V21.3H69.4V11.19q0-3.55.22-8h-.13Q68.34,6.41,67.3,8.81Z" />
+                <circle cx="18.69" cy="10.85" r="1.13" />
+                <circle cx="14.39" cy="10.85" r="1.13" />
+                <circle cx="22.99" cy="10.85" r="1.13" />
+            </svg>
+            <p class="footer-titles">About project</p>
+            <p>The web forum with user authentication, post/comment features, like/dislike functionality, category
+                filtering, encrypted passwords in an SQLite database, login sessions via cookies, and Docker
+                containerization.</p>
+        </div>
+        <div id="contact-info">
+            <p class="footer-titles">Our team</p>
+            <table>
+                <tr>
+                    <td>Front-end:</td>
+                    <td><a href="https://01.kood.tech/git/Olya">Olha Balahush</a></td>
+                </tr>
+                <tr>
+                    <td>Back-end:</td>
+                    <td><a href="https://01.kood.tech/git/ekhalets">Elena Khaletska</a></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><a href="https://01.kood.tech/git/TaivoT">Taivo Tokman</a> </td>
+                </tr>
+                <tr>
+                    <td>Db:</td>
+                    <td><a href="https://01.kood.tech/git/govchare">Glib Ovcharenko</a></td>
+                </tr>
+            </table>
+        </div>
+        <div id="copyright">
+            <p>Copyright &copy; 2023 All rights reserved | <a href="https://01.kood.tech/git/Olya/forum">The repository
+                    of project</a> </p>
+        </div>
+    </footer>
+
+    <script>
+        function onHomeButton() {
+            window.location.href = "/";
+        }
+        function onEditButton() {
+            var edittextarea = document.getElementById("edit-about");
+            var about = document.getElementById("already-created-about");
+
+            var logout = document.getElementById("btn-log-out");
+            var update = document.getElementById("btn-update-profile");
+            var requestModerator = document.getElementById("btn-request-moderator");
+            var cancel = document.getElementById("btn-cancel-updation");
+            if (about.style.display === 'block') {
+                about.style.display = 'none';
+                logout.style.display = 'none';
+                update.style.display = 'none';
+                requestModerator.style.display = 'none';
+
+                edittextarea.style.display = 'flex';
+                cancel.style.display = 'block';
+            } else {
+                about.style.display = 'block';
+                logout.style.display = 'block';
+                update.style.display = 'block';
+                requestModerator.style.display = 'block';
+
+                edittextarea.style.display = 'none';
+                cancel.style.display = 'none';
+            }
+        }
+        function onPopup(id) {
+            var popup = document.getElementById(id);
+            var rec = document.getElementById("gray-screen");
+            if (popup.style.display === "block") {
+                popup.style.display = "none";
+                if (id !== "notifications-popup") {
+                    rec.style.display = "none";
+                }
+            } else {
+                popup.style.display = "block";
+                if (id !== "notifications-popup") {
+                    rec.style.display = "block";
+                }
+            }
+        }
+        function onRequest() {
+            var input = document.getElementById("response-form");
+            if (input.style.display === "none") {
+                input.style.display = "block";
+            } else {
+                input.style.display = "none";
+            }
+        }
+
+        // to hide notifications if user click somewhere out of them
+        var btnNotifications = document.getElementById('btn-notifications');
+        var notificationsPopup = document.getElementById('notifications-popup');
+
+        document.addEventListener('click', function (event) {
+            // Check if the clicked element is not the notificationsPopup element or its descendants
+            if (!notificationsPopup.contains(event.target) && !btnNotifications.contains(event.target)) {
+                notificationsPopup.style.display = 'none';
+            }
+        });
+
+        const userPosts = document.querySelector("#user-posts")
+        const userLikedDislikedPosts = document.querySelector("#user-liked-disliked-posts")
+        const userCommentedPosts = document.querySelector("#user-commented-posts")
+        const btnUserPosts = document.querySelector("#btn-user-posts")
+        const btnUserLikedDislikedPosts = document.querySelector("#btn-user-liked-disliked-posts")
+        const btnUserCommentedPosts = document.querySelector("#btn-user-commented-posts")
+
+        btnUserPosts.addEventListener('click', () => {
+            if (userPosts.style.display !== "flex") {
+                userPosts.style.display = "flex"
+                userLikedDislikedPosts.style.display = "none"
+                userCommentedPosts.style.display = "none"
+
+                btnUserPosts.classList.add("profile-buttons-chosen")
+                btnUserLikedDislikedPosts.classList.remove("profile-buttons-chosen")
+                btnUserCommentedPosts.classList.remove("profile-buttons-chosen")
+            }
+        })
+
+        btnUserLikedDislikedPosts.addEventListener('click', () => {
+            if (userLikedDislikedPosts.style.display !== "flex") {
+                userLikedDislikedPosts.style.display = "flex"
+                userPosts.style.display = "none"
+                userCommentedPosts.style.display = "none"
+
+                btnUserPosts.classList.remove("profile-buttons-chosen")
+                btnUserLikedDislikedPosts.classList.add("profile-buttons-chosen")
+                btnUserCommentedPosts.classList.remove("profile-buttons-chosen")
+            }
+        })
+
+        btnUserCommentedPosts.addEventListener('click', () => {
+            if (userCommentedPosts.style.display !== "flex") {
+                userCommentedPosts.style.display = "flex"
+                userLikedDislikedPosts.style.display = "none"
+                userPosts.style.display = "none"
+
+                btnUserPosts.classList.remove("profile-buttons-chosen")
+                btnUserLikedDislikedPosts.classList.remove("profile-buttons-chosen")
+                btnUserCommentedPosts.classList.add("profile-buttons-chosen")
+            }
+        })
+
+    </script>
+</body>
+
+</html>

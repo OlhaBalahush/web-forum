@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/static/css/basic.css" type="text/css" />
+  <link rel="stylesheet" href="/static/css/main-page.css" type="text/css" />
+  <link rel="stylesheet" href="/static/css/dual-range-slider.css" type="text/css" />
+  <link rel="stylesheet" href="/static/css/adaptation.css" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="/static/materials/favicon.ico">
+  <title>FORUM</title>
+</head>
+
+<body>
+  <header>
+    <button id="btn-home" onclick="onHomeButton()">
+      <img id="logo" src="/static/materials/logo.svg" />
+    </button>
+
+    {{ if eq .CurrentUser.Name "" }}
+    <button id="btn-log-in" class="button" onclick="onPopup('log-in-popup')">
+      <span>log in</span>
+    </button>
+    <button id="btn-sign-up" class="button" onclick="onPopup('sign-up-popup')">
+      <span>sign up</span>
+    </button>
+    {{else}}
+    <button id="btn-notifications" onclick="onPopup('notifications-popup')">
+      <img src="/static/materials/notification.svg">
+
+      {{ if ne (len .CurrentUser.NewNotifications) 0 }}
+      <div id="messages-counter">
+        <span>{{ len .CurrentUser.NewNotifications }}</span>
+      </div>
+      {{ end }}
+    </button>
+
+    <a href="/profilepage/{{.CurrentUser.Name}}" id="btn-my-profile">
+      <div class="container-btn-my-profile-icon">
+        <img id="btn-my-profile-icon" {{ if .CurrentUser.ImagePath }} src="/{{ .CurrentUser.ImagePath }}" {{ else }}
+          src="/static/materials/user-image.svg" {{ end }}>
+      </div>
+      <span>my profile</span>
+    </a>
+    {{end}}
+  </header>
+
+  <!-- #region popups -->
+
+  <!-- #region authorization popups -->
+  <div id="gray-screen" class="gray-screen" {{ if ne .Err.ErrorCode 0 }} style="display: block;" {{ end }}></div>
+
+  <div id="sign-up-popup" class="popup" {{ if and (ne .Err nil) (eq .Err.ErrorCode 1) }} style="display: block;" {{ end
+    }}>
+    <p class="title-for-popups">sign up to forum</p>
+    <form class="sign-up-log-in-form" action="/sign-up" method="POST">
+      <label for="username-sign-up">Username:</label>
+      <input class="form-input" type="text" id="username-sign-up" name="username-sign-up" required>
+      <label for="email-address-sign-up">email address:</label>
+      <input class="form-input" type="email" id="email-address-sign-up" name="email-address-sign-up" required>
+      <label for="password-sign-up">Password:</label>
+      <input class="form-input" type="password" id="password-sign-up" name="password-sign-up" required>
+
+      {{ if and (ne .Err nil) (eq .Err.ErrorCode 1) }}
+      <span class="authorization-error">{{ .Err.Message }}</span>
+      {{ end }}
+
+      <div class="google-github">
+        <a href="/google/login/"><img width="40" height="40" src="/static/materials/google-icon.svg"></img></a>
+        <a href="/github/login/"><img width="40" height="40" src="/static/materials/github-icon.svg"></img></a>
+      </div>
+
+      <button id="btn-apply-sign-up" class="button" type="submit">
+        <span>sign up</span>
+      </button>
+    </form>
+
+    <a href="/" id="btn-cancel-sign-up" class="button"><span>cancel</span></a>
+  </div>
+
+  <div id="log-in-popup" class="popup" {{ if and (ne .Err nil) (eq .Err.ErrorCode 2) }} style="display: block;" {{ end
+    }}>
+    <p class="title-for-popups">log in to forum</p>
+    <form class="sign-up-log-in-form" action="/log-in" method="POST">
+      <label for="email-address-log-in">email address:</label>
+      <input class="form-input" type="email" id="email-address-log-in" name="email-address-log-in" required>
+      <label for="password-log-in">Password:</label>
+      <input class="form-input" type="password" id="password-log-in" name="password-log-in" required>
+
+      {{ if and (ne .Err nil) (eq .Err.ErrorCode 2) }}
+      <span class="authorization-error">{{ .Err.Message }}</span>
+      {{ end }}
+
+      <div class="google-github">
+        <a href="/google/login/"><img width="40" height="40" src="/static/materials/google-icon.svg"></img></a>
+        <a href="/github/login/"><img width="40" height="40" src="/static/materials/github-icon.svg"></img></a>
+      </div>
+      <button id="btn-apply-log-in" class="button" type="submit">
+        <span>log in</span>
+      </button>
+    </form>
+    <a href="/" id="btn-cancel-log-in" class="button"><span>cancel</span></a>
+  </div>
+  <!-- #endregion -->
+
+
+  <div id="filter-popup" class="popup">
+    <p class="title-for-popups">filter</p>
+    <div class="sort-container">
+      <label id="lb-sort">Sort by likes:</label>
+      <form action="/sort-up" method="GET">
+        <button id="sort-up" class="btn-sort" type="submit">
+          <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M15.36 15.5867C15.4667 15.8427 15.4987 16.0773 15.456 16.2907C15.392 16.504 15.2853 16.6747 15.136 16.8027C14.9653 16.9093 14.7733 16.9733 14.56 16.9947C14.3467 17.016 14.1547 16.9733 13.984 16.8667C13.792 16.76 13.632 16.5893 13.504 16.3547L7.104 2.01867L8.384 2.01867L1.984 16.3547C1.856 16.5893 1.70667 16.76 1.536 16.8667C1.344 16.9733 1.14133 17.016 0.928 16.9947C0.714666 16.9733 0.533332 16.9093 0.384 16.8027C0.213333 16.6747 0.0959996 16.504 0.0320004 16.2907C-0.032 16.0773 -4.03431e-07 15.8427 0.127999 15.5867L6.304 1.95467C6.60267 1.272 7.08267 0.930666 7.744 0.930666C8.064 0.930666 8.352 1.016 8.608 1.18667C8.84267 1.35733 9.03467 1.61333 9.184 1.95467L15.36 15.5867Z"
+              fill="#555358" />
+          </svg>
+          up
+        </button>
+      </form>
+
+      <form action="/sort-down" method="GET">
+        <button id="sort-down" class="btn-sort" type="submit">
+          <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M0.567979 1.41333C0.461312 1.15733 0.429311 0.922666 0.471978 0.709333C0.535978 0.495999 0.642645 0.325333 0.791978 0.197333C0.962645 0.090666 1.15464 0.026666 1.36798 0.00533272C1.58131 -0.0160006 1.77331 0.026666 1.94398 0.133333C2.13598 0.239999 2.29598 0.410666 2.42398 0.645333L8.82398 14.9813L7.54398 14.9813L13.944 0.645333C14.072 0.410667 14.2213 0.24 14.392 0.133333C14.584 0.0266665 14.7866 -0.0160001 15 0.00533331C15.2133 0.0266666 15.3946 0.0906666 15.544 0.197333C15.7146 0.325333 15.832 0.496 15.896 0.709333C15.96 0.922667 15.928 1.15733 15.8 1.41333L9.62398 15.0453C9.32531 15.728 8.84531 16.0693 8.18398 16.0693C7.86398 16.0693 7.57598 15.984 7.31998 15.8133C7.08531 15.6427 6.89331 15.3867 6.74398 15.0453L0.567979 1.41333Z"
+              fill="#555358" />
+          </svg>
+          down
+        </button>
+      </form>
+    </div>
+
+    <form class="search" autocomplete="off" action="/filter-date" method="POST">
+      <div class="range_container">
+        <label>created at:</label>
+        <div class="form_control">
+          <div class="form_control_container">
+            <input class="form_control_container__time__input" type="number" id="fromInput" name="fromInput"
+              value="2015" nmin="2010" max="2023" />
+          </div>
+          <div class="form_control_container">
+            <input class="form_control_container__time__input" type="number" id="toInput" name="toInput" value="2022"
+              min="2010" max="2023" />
+          </div>
+        </div>
+        <div class="sliders_control">
+          <!-- TODO: get max and min created at to the page -->
+          <input id="fromSlider" class="slider" type="range" value="2015" min="2010" max="2023" />
+          <input id="toSlider" class="slider" type="range" value="2022" min="2010" max="2023" />
+        </div>
+      </div>
+      <button id="btn-apply-filter" class="button">
+        <span>apply</span>
+      </button>
+    </form>
+    <button id="btn-cancel" class="button" onclick="onPopup('filter-popup')">
+      <span>cancel</span>
+    </button>
+  </div>
+
+  <div id="notifications-popup" class="popup popup-scroller">
+    <p id="notifications-title" class="title-for-popups">notifications</p>
+
+    {{ if and (eq (len .CurrentUser.ReadedNotifications) 0) (eq (len .CurrentUser.NewNotifications) 0) }}
+    <p class="notification-titles">You have no notification yet.</p>
+    {{ end }}
+
+
+    {{ if ne (len .CurrentUser.NewNotifications) 0 }}
+    <p class="notification-titles">New</p>
+    {{ end }}
+
+    {{ range .CurrentUser.NewNotifications }}
+    {{ if eq .Action "request" }}
+    <button class="notification" onclick="onRequest()"> 
+      <a href="/profilepage/{{ .WhoDid.Name }}">{{ .WhoDid.Name }}</a> 
+      {{ .Action }} {{.Message}} 
+      <a href="/notification/{{ .PostID }}/{{ .Id }}">{{ .PostTitle }}</a>
+    </button>
+
+    <!-- TODO open input if user click on the button -->
+    <form id="response-form" action="/response/{{.Id}}" method="post" style="display: none;">
+      <input id="add-response" class="response-input" type="text" name="response"
+        placeholder="Write response..." maxlength="500" required />
+    </form>
+
+    {{ else }}
+    <p class="notification"> <a href="/profilepage/{{ .WhoDid.Name }}">{{ .WhoDid.Name }}</a> 
+      {{ .Action }} {{.Message}} 
+      <a href="/notification/{{ .PostID }}/{{ .Id }}">{{ .PostTitle }}</a>
+    </p>
+    {{ end }}
+    {{ end }}
+
+    {{ if ne (len .CurrentUser.ReadedNotifications) 0 }}
+    <p class="notification-titles">Older</p>
+    {{ end }}
+
+    {{ range .CurrentUser.ReadedNotifications}}
+    <p class="notification"> <a href="/profilepage/{{ .WhoDid.Name }}">{{ .WhoDid.Name }}</a> 
+      {{ .Action }} {{.Message}}
+      <a href="/notification/{{ .PostID }}/{{ .Id }}">{{ .PostTitle }}</a></p>
+    {{ end }}
+  </div>
+
+  <div id="categories-popup" class="popup popup-scroller">
+    {{ range .Categories }}
+    <form action="/delete-category" method="GET">
+      <button id="category-{{.}}" name="category" class="btn-category category-manager" value="{{.}}">{{.}}
+        <span>delete</span>
+      </button>
+    </form>
+    {{ end }}
+
+    <!-- add category -->
+    {{ if ne .CurrentUser.Name "" }}
+    <form action="/add-category" id="category-form" method="post">
+      <input id="add-category-input" type="text" name="add-category-input"
+        placeholder="Add category here" maxlength="500" required value="" />
+    </form>
+    {{ end }}
+  </div>
+  <!-- #endregion -->
+
+
+  <div id="main-part">
+    <p id="title" class="title">forum</p>
+
+    <div id="search-categories-filter">
+      <form class="search" autocomplete="off" action="/search" method="POST">
+        <div class="input-group">
+          <input id="input-line" class="input-line" type="text" name="searchBar" placeholder="Search for a post" />
+        </div>
+      </form>
+
+      <div id="categories-filter">
+        <button id="slideLeft" class="horizontal-slider-btns" type="button">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M9.12048 0.0738554C9.27979 0.0049239 9.42582 -0.015756 9.55858 0.0118166C9.69134 0.0531756 9.79754 0.122107 9.8772 0.218611C9.94358 0.328902 9.98341 0.452979 9.99668 0.590842C10.01 0.728705 9.98341 0.852782 9.91703 0.963072C9.85065 1.08715 9.74444 1.19055 9.59841 1.27326L0.677067 5.40916L0.677067 4.58198L9.59841 8.71787C9.74444 8.80059 9.85065 8.8971 9.91703 9.00739C9.98341 9.13146 10.01 9.26243 9.99668 9.4003C9.98341 9.53816 9.94358 9.65534 9.8772 9.75185C9.79754 9.86214 9.69134 9.93796 9.55858 9.97932C9.42582 10.0207 9.27979 10 9.12048 9.91728L0.63724 5.92614C0.212414 5.73314 6.90981e-07 5.42294 7.28344e-07 4.99557C7.46422e-07 4.78877 0.0531043 4.60266 0.15931 4.43722C0.265517 4.28557 0.424827 4.1615 0.63724 4.06499L9.12048 0.0738554Z"
+              fill="#2E282A" />
+          </svg>
+        </button>
+        <div id="category-container">
+          {{ range .Categories }}
+          <a href="/filter/{{.}}" id="btn-category" class="btn-category">
+            <span class="category">{{.}}</span>
+          </a>
+          {{ end }}
+        </div>
+        <button id="slideRight" class="horizontal-slider-btns" type="button">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M0.879522 9.92614C0.720212 9.99508 0.574179 10.0158 0.44142 9.98818C0.308662 9.94682 0.202456 9.87789 0.122801 9.78139C0.0564221 9.6711 0.0165947 9.54702 0.00331896 9.40916C-0.00995687 9.2713 0.0165947 9.14722 0.0829737 9.03693C0.149353 8.91285 0.255559 8.80945 0.401593 8.72674L9.32293 4.59084V5.41802L0.401593 1.28213C0.255559 1.19941 0.149353 1.1029 0.0829737 0.992614C0.0165947 0.868537 -0.00995687 0.737568 0.00331896 0.599705C0.0165947 0.461841 0.0564221 0.344657 0.122801 0.248153C0.202456 0.137863 0.308662 0.0620382 0.44142 0.0206798C0.574179 -0.0206795 0.720212 -2.6963e-07 0.879522 0.0827174L9.36276 4.07386C9.78759 4.26686 10 4.57706 10 5.00443C10 5.21123 9.9469 5.39734 9.84069 5.56278C9.73448 5.71443 9.57517 5.8385 9.36276 5.93501L0.879522 9.92614Z"
+              fill="#2E282A" />
+          </svg>
+        </button>
+
+        
+        <button id="btn-filter" onclick="onPopup('filter-popup')">
+          <img src="/static/materials/filter-icon.svg" />
+        </button>
+      </div>
+    </div>
+    {{ if eq .CurrentUser.Role 3 }}
+    <button id="btn-all-categories" class="button" onclick="onPopup('categories-popup')">manage categories</button>
+    {{ end }}
+
+    <div class="content">
+      <!-- #region button 'add post' for authorized users -->
+      {{ if ne .CurrentUser.Name "" }}
+      <a href="/createpostpage/{{.CurrentUser.Name}}" id="btn-add-post" class="post">
+        <div class="post-picture-add">
+          <div class="plus radius"></div>
+        </div>
+
+        <div class="post-main-information">
+          <span id="small-post-title" class="title">Create post</span>
+        </div>
+      </a>
+      {{end}}
+      <!-- #endregion -->
+      <!-- #region all posts -->
+      {{ range .Posts }}
+      <a href="/postpage/{{.Id}}" class="post">
+        <div class="shadow-for-button">
+          <span class="short-post-text">{{.Text}}</span>
+          <div class="user-data-container">
+            <div class="user-container">
+              <div id="post-creator-image-container">
+                <img id="post-creator-image" {{ if .Creator.ImagePath }} src="/{{ .Creator.ImagePath }}" {{ else }}
+                  src="/static/materials/user-image.svg" {{ end }}>
+              </div>
+              <span>{{.Creator.Name}}</span>
+            </div>
+            <p class="created-at">{{.CreatedAt}}</p>
+          </div>
+        </div>
+
+        <div class="post-picture">
+          {{ if .ImagePath }}
+          <img id="post-image-exists" src="/{{ .ImagePath }}">
+          {{ else }}
+          <img id="post-image-holder" src="/static/materials/logo.svg">
+          {{ end }}
+        </div>
+
+        <div class="post-main-information">
+          <span id="small-post-title" class="title">{{ .Title }}</span>
+          <div id="likes-dislikes">
+            {{ if .LikedByUser }}
+            <img src="/static/materials/filled-like-icon.svg" />
+            <span class="likes-dialikes-numbers">{{.Likes}}</span>
+            {{ else }}
+            <img src="/static/materials/like.svg" />
+            <span class="likes-dialikes-numbers">{{.Likes}}</span>
+            {{ end }} {{ if .DislikedByUser }}
+            <img src="/static/materials/filled-dislike-icon.svg" />
+            <span class="likes-dialikes-numbers">{{.Dislikes}}</span>
+            {{ else }}
+            <img src="/static/materials/dislike.svg" />
+            <span class="likes-dialikes-numbers">{{.Dislikes}}</span>
+            {{ end }}
+          </div>
+        </div>
+      </a>
+      {{ end }}
+      <!-- #endregion -->
+    </div>
+  </div>
+
+  <footer>
+    <div id="about">
+      <svg id="forum-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 71.94 21.69">
+        <path d="M2.55,21.69H0V0H18.69V2.27H2.55V9.44h8.79v2.29H2.55Z" />
+        <path
+          d="M28.43,10.86a13.43,13.43,0,0,1-.68,4.36,10,10,0,0,1-2,3.42,8.82,8.82,0,0,1-3.06,2.25,9.75,9.75,0,0,1-4,.8,10.15,10.15,0,0,1-4.11-.8,8.77,8.77,0,0,1-3.07-2.25,9.77,9.77,0,0,1-1.92-3.42A13.43,13.43,0,0,1,9,10.86a13.32,13.32,0,0,1,.69-4.38A10.2,10.2,0,0,1,11.6,3.05,8.67,8.67,0,0,1,14.66.81a9.74,9.74,0,0,1,4-.81,9.92,9.92,0,0,1,4.09.81,8.67,8.67,0,0,1,3.06,2.24,9.82,9.82,0,0,1,1.92,3.43A13.59,13.59,0,0,1,28.43,10.86Zm-2.53,0a11.45,11.45,0,0,0-.56-3.72,7.43,7.43,0,0,0-1.52-2.68,6.4,6.4,0,0,0-2.29-1.64,7.58,7.58,0,0,0-5.67,0,6.4,6.4,0,0,0-2.29,1.64A7.59,7.59,0,0,0,12,7.14a11.46,11.46,0,0,0-.55,3.72,11.26,11.26,0,0,0,.56,3.71,8,8,0,0,0,1.53,2.68,6.37,6.37,0,0,0,2.29,1.63,7.47,7.47,0,0,0,2.86.54,7.3,7.3,0,0,0,2.82-.54,6.48,6.48,0,0,0,2.27-1.63,7.52,7.52,0,0,0,1.52-2.68A11.26,11.26,0,0,0,25.9,10.86Z" />
+        <path
+          d="M28.43,12.64v9.05H25.88V.39H31.3a22.09,22.09,0,0,1,2.33.1,12,12,0,0,1,1.76.32,6.26,6.26,0,0,1,3.34,2,5.4,5.4,0,0,1,1,3.56,6,6,0,0,1-.26,2.27,5.33,5.33,0,0,1-1.15,1.74,5.91,5.91,0,0,1-1.75,1.2,9.65,9.65,0,0,1-2.28.69v.06l7.6,7.29H39.35l-7.84-7Zm0-10v7.65h2.51c.79,0,1.45,0,2-.07A7.57,7.57,0,0,0,34.43,10a4.12,4.12,0,0,0,2-1.29,3.66,3.66,0,0,0,.71-2.33,3.38,3.38,0,0,0-.68-2.16A3.72,3.72,0,0,0,34.65,3a6.65,6.65,0,0,0-1.35-.25,18.18,18.18,0,0,0-2-.08Z" />
+        <path
+          d="M45.35,19.42a7.28,7.28,0,0,0,2-.26,5,5,0,0,0,1.54-.75A4.54,4.54,0,0,0,50,17.24a5.59,5.59,0,0,0,.67-1.51,7,7,0,0,0,.22-1.14c0-.43.06-.83.06-1.23V.39h2.55V13.3c0,.49,0,1-.08,1.53a10.61,10.61,0,0,1-.25,1.48,8.12,8.12,0,0,1-.89,2.14,6,6,0,0,1-1.55,1.71,7.3,7.3,0,0,1-2.29,1.12,10.8,10.8,0,0,1-3.13.41,10.93,10.93,0,0,1-3-.38,7.12,7.12,0,0,1-2.22-1,5.85,5.85,0,0,1-1.53-1.57,8.1,8.1,0,0,1-.92-2A9.32,9.32,0,0,1,37.3,15a14.75,14.75,0,0,1-.11-1.73V6.52h2.55v6.84a10.4,10.4,0,0,0,.1,1.45,7.42,7.42,0,0,0,.32,1.35A4.85,4.85,0,0,0,42,18.55,5.87,5.87,0,0,0,45.35,19.42Z" />
+        <path
+          d="M62,21.3H60.87L55.6,8.81q-1.1-2.58-2.19-5.61h-.12c.14,2.91.22,5.57.22,8H51V.39h3.67l4.92,11.83c.57,1.35,1.18,3,1.86,4.89h.08q1.13-3.16,1.86-4.89L68.27.39h3.67V21.3H69.4V11.19q0-3.55.22-8h-.13Q68.34,6.41,67.3,8.81Z" />
+        <circle cx="18.69" cy="10.85" r="1.13" />
+        <circle cx="14.39" cy="10.85" r="1.13" />
+        <circle cx="22.99" cy="10.85" r="1.13" />
+      </svg>
+      <p class="footer-titles">About project</p>
+      <p>The web forum with user authentication, post/comment features, like/dislike functionality, category filtering,
+        encrypted passwords in an SQLite database, login sessions via cookies, and Docker containerization.</p>
+    </div>
+    <div id="contact-info">
+      <p class="footer-titles">Our team</p>
+      <table>
+        <tr>
+          <td>Front-end:</td>
+          <td><a href="https://01.kood.tech/git/Olya">Olha Balahush</a></td>
+        </tr>
+        <tr>
+          <td>Back-end:</td>
+          <td><a href="https://01.kood.tech/git/ekhalets">Elena Khaletska</a></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><a href="https://01.kood.tech/git/TaivoT">Taivo Tokman</a></td>
+        </tr>
+        <tr>
+          <td>Db:</td>
+          <td><a href="https://01.kood.tech/git/govchare">Glib Ovcharenko</a></td>
+        </tr>
+      </table>
+    </div>
+    <div id="copyright">
+      <p>Copyright &copy; 2023 All rights reserved | <a href="https://01.kood.tech/git/Olya/forum">The repository of
+          project</a></p>
+    </div>
+  </footer>
+
+  <script>
+    function onHomeButton() {
+      window.location.href = "/";
+    }
+    function onPopup(id) {
+      var popup = document.getElementById(id);
+      var rec = document.getElementById("gray-screen");
+      if (popup.style.display === "block") {
+        popup.style.display = "none";
+        if (id !== "notifications-popup" && id !== "categories-popup") {
+          rec.style.display = "none";
+        }
+      } else {
+        popup.style.display = "block";
+        if (id !== "notifications-popup" && id !== "categories-popup") {
+          rec.style.display = "block";
+        }
+      }
+    }
+    function onRequest() {
+      var input = document.getElementById("response-form");
+      if (input.style.display === "none") {
+        input.style.display = "block";
+      } else {
+        input.style.display = "none";
+      }
+    }
+    function updateValue(id, val) {
+      document.getElementById(id).innerHTML = val;
+    }
+
+    // to hide notifications if user click somewhere out of them
+    var btnNotifications = document.getElementById('btn-notifications');
+    var notificationsPopup = document.getElementById('notifications-popup');
+
+    document.addEventListener('click', function (event) {
+      // Check if the clicked element is not the notificationsPopup element or its descendants
+      if (!notificationsPopup.contains(event.target) && !btnNotifications.contains(event.target)) {
+        notificationsPopup.style.display = 'none';
+      }
+    });
+
+    // to hide categories-popup if user click somewhere out of them
+    var btnAllCategories = document.getElementById('btn-all-categories');
+    var categoriesPopup = document.getElementById('categories-popup');
+
+    document.addEventListener('click', function (event) {
+      // Check if the clicked element is not the categoriesPopup element or its descendants
+      if (!categoriesPopup.contains(event.target) && !btnAllCategories.contains(event.target)) {
+        categoriesPopup.style.display = 'none';
+      }
+    });
+  </script>
+  <script src="/static/js/vertical-slider.js"></script>
+  <script src="/static/js/dual-range-slider.js"></script>
+</body>
+
+</html>

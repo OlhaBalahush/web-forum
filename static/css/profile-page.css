@@ -1,0 +1,211 @@
+#main-part-profile-page {
+    height: auto;
+    min-height: calc(80vh - 50px);
+    background-color: var(--color-1);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+#user-information {
+    background-color: var(--color-2);
+    min-height: 300px;
+    min-width: 325px;
+    width: 100%;
+    margin: 170px;
+    margin-bottom: 0;
+    border-radius: 30px;
+
+    color: var(--color-1);
+}
+
+#user-basic {
+    position: absolute;
+    top: calc(50px + 60px);
+    left: calc(130px + 10%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#username {
+    font-size: 36px;
+    font-family: var(--main-text);
+    padding-top: 20px;
+
+    width: 325px;
+    text-align: center;
+}
+
+.user-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+}
+
+#user-base-image {
+    max-width: 100%;
+    max-height: 100%;
+    min-height: 210px;
+    min-width: 210px;
+    z-index: 1;
+    object-fit: cover;
+}
+
+#gray-background {
+    position: absolute;
+    top: 0;
+    border-radius: 50%;
+
+    width: 210px;
+    height: 210px;
+
+    opacity: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--color-3));
+}
+
+#user-hover-image {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 170px;
+    left: 50%;
+    opacity: 0;
+    transform: translate(-50%, 0);
+}
+
+.user-image:hover #gray-background {
+    opacity: 1;
+}
+
+.user-image:hover #user-hover-image {
+    opacity: 0.8;
+}
+
+#user-additional {
+    width: calc(75% - 250px);
+    height: auto;
+    min-height: 180px;
+    margin: 30px;
+    margin-left: calc(25% + 210px);
+
+    font-family: var(--main-text);
+    font-size: var(--main-text-font-size);
+    text-align: left;
+}
+
+#user-additional p {
+    text-transform: uppercase;
+}
+
+#btn-save {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#user-posts,
+#user-liked-disliked-posts,
+#user-commented-posts {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+#profile-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 20px;
+}
+
+#btn-log-out,
+#btn-update-profile,
+#btn-request-moderator,
+#btn-update-profile-submit,
+#btn-cancel-updation {
+    color: var(--color-1);
+}
+
+#btn-update-profile-submit {
+    margin-top: 10px;
+}
+
+#edit-about {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    display: none;
+}
+
+#btn-cancel-updation {
+    display: none;
+}
+
+#create-about-input {
+    background: var(--color-2);
+    border-style: none;
+    border-radius: 5px;
+    width: 100%;
+
+    font-family: var(--main-text);
+    font-size: var(--main-text-font-size);
+    color: var(--color-1);
+}
+
+#buttons {
+    width: 100%;
+}
+
+.profile-buttons {
+    margin-top: 10px;
+    padding: 10px;
+    color: var(--color-2);
+    background-color: transparent;
+    font-family: var(--main-text);
+    text-transform: uppercase;
+    font-size: var(--main-text-font-size);
+    letter-spacing: -0.075em;
+    border: none;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.profile-buttons:hover {
+    letter-spacing: 0.05em;
+}
+
+.profile-buttons:focus {
+    color: var(--color-4);
+    letter-spacing: 0.05em;
+}
+
+.profile-buttons-chosen {
+    color: var(--color-4);
+    letter-spacing: 0.05em;
+}
+
+#btn-user-posts,
+#btn-user-liked-disliked-posts {
+    border-right: 1px solid var(--color-3);
+}
+
+#user-liked-disliked-posts,
+#user-commented-posts {
+    display: none;
+}
+
+.no-posts-message {
+    margin: 0;
+    color: var(--color-2);
+    font-family: var(--main-text);
+    font-size: var(--main-text-font-size);
+    text-transform: uppercase;
+}

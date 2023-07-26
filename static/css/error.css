@@ -1,0 +1,28 @@
+#error-container {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.error {
+    margin: 0;
+    color: var(--color-3);
+    font-family: var(--title-text);
+    font-size: 400px;
+}
+
+#error-message {
+    margin: 0;
+    color: var(--color-2);
+    font-family: var(--main-text);
+    font-size: var(--main-text-font-size);
+    text-transform: uppercase;
+}
+
+#btn-to-home {
+    margin-top: 20px;
+    background-color: var(--color-5);
+    color: var(--color-1);
+}
