@@ -1,6 +1,6 @@
 [build]
   command = "./build.sh"
-  functions = "cmd"
+  functions = "cmd/gateway"
   publish = "public"
 
 [build.environment]
@@ -9,5 +9,5 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/gateway/:splat"
+  to = "/.netlify/cmd/gateway/:splat"
   status = 200
