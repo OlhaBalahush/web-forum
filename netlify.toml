@@ -11,6 +11,3 @@
   from = "/api/*"
   to = "/.netlify/cmd/gateway/:splat"
   status = 200
-
-[[functions]]
-  name = "server"
