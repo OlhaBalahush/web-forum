@@ -41,7 +41,7 @@ func routes() http.Handler {
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 	mux.HandleFunc("/", handlers.RenderMainPage)
 	mux.HandleFunc("/sign-up", handlers.SignUp)
-	mux.HandleFunc("/log-in", handlers.LogIn)
+	mux.HandleFunc("/.netlify/functions/login", handlers.LogIn)
 	mux.HandleFunc("/google/login/", handlers.GoogleLogin)
 	mux.HandleFunc("/callback", handlers.GoogleCallback)
 	mux.HandleFunc("/github/login/", handlers.GithubLogin)
