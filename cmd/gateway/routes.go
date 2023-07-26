@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"01.kood.tech/git/Olya/forum-moderation.git/handlers"
-	mw "01.kood.tech/git/Olya/forum-moderation.git/middleware"
+	"github.com/OlhaBalahush/web-forum/cmd/gateway/handlers"
+	mw "github.com/OlhaBalahush/web-forum/cmd/gateway/middleware"
 )
 
 func routes() http.Handler {

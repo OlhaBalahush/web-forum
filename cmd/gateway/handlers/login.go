@@ -8,8 +8,8 @@ import (
 	"regexp"
 	"strings"
 
-	"01.kood.tech/git/Olya/forum-moderation.git/helpers"
-	"01.kood.tech/git/Olya/forum-moderation.git/service"
+	"github.com/OlhaBalahush/web-forum/cmd/gateway/helpers"
+	"github.com/OlhaBalahush/web-forum/cmd/gateway/service"
 )
 
 func SignUp(w http.ResponseWriter, r *http.Request) {

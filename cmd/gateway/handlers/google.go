@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"01.kood.tech/git/Olya/forum-moderation.git/service"
+	"github.com/OlhaBalahush/web-forum/cmd/gateway/service"
 
 	_ "github.com/mattn/go-sqlite3"
 	"golang.org/x/oauth2"

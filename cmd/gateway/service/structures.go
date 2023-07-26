@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	"01.kood.tech/git/Olya/forum-moderation.git/db"
+	"github.com/OlhaBalahush/web-forum/cmd/gateway/db"
 )
 
 type User struct {

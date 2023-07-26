@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"01.kood.tech/git/Olya/forum-moderation.git/service"
+	"github.com/OlhaBalahush/web-forum/cmd/gateway/service"
 )
 
 func RenderProfilePage(w http.ResponseWriter, r *http.Request) {

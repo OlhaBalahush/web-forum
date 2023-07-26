@@ -3,7 +3,7 @@ package db
 import (
 	"database/sql"
 
-	"01.kood.tech/git/Olya/forum-moderation.git/helpers"
+	"github.com/OlhaBalahush/web-forum/cmd/gateway/helpers"
 
 	_ "github.com/mattn/go-sqlite3"
 )

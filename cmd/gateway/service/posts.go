@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"01.kood.tech/git/Olya/forum-moderation.git/helpers"
+	"github.com/OlhaBalahush/web-forum/cmd/gateway/helpers"
 )
 
 var (

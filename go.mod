@@ -1,4 +1,4 @@
-module 01.kood.tech/git/Olya/forum-moderation.git
+module github.com/OlhaBalahush/web-forum
 
 go 1.19
 

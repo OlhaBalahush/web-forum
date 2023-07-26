@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"01.kood.tech/git/Olya/forum-moderation.git/handlers"
+	"github.com/OlhaBalahush/web-forum/cmd/gateway/handlers"
 )
 
 type Limiter struct {
