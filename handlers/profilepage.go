@@ -59,7 +59,7 @@ func RenderProfilePage(w http.ResponseWriter, r *http.Request) {
 		ServerResp.User.Request = 0
 	}
 
-	template, err := template.ParseFiles("templates/profile.html")
+	template, err := template.ParseFiles("public/templates/profile.html")
 	if err != nil {
 		RenderErrorPage(w, http.StatusInternalServerError)
 		return
@@ -84,7 +84,7 @@ func RenderProfilePage(w http.ResponseWriter, r *http.Request) {
 
 func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	ServerResp.Err = errResp{}
-	template, err := template.ParseFiles("templates/profile.html")
+	template, err := template.ParseFiles("public/templates/profile.html")
 	if err != nil {
 		RenderErrorPage(w, http.StatusInternalServerError)
 		return
@@ -119,7 +119,7 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 
 func UpdateProfilePicture(w http.ResponseWriter, r *http.Request) {
 	ServerResp.Err = errResp{}
-	template, err := template.ParseFiles("templates/profile.html")
+	template, err := template.ParseFiles("public/templates/profile.html")
 	if err != nil {
 		RenderErrorPage(w, http.StatusInternalServerError)
 		return

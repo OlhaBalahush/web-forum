@@ -70,7 +70,7 @@ func RenderPostPage(w http.ResponseWriter, r *http.Request) {
 		ServerResp.Post.Comments[index] = c
 	}
 
-	template, err := template.ParseFiles("templates/post.html")
+	template, err := template.ParseFiles("public/templates/post.html")
 	if err != nil {
 		fmt.Println("err2")
 		fmt.Println(err)
@@ -98,7 +98,7 @@ func RenderCreatePostPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	template, err := template.ParseFiles("templates/createPost.html")
+	template, err := template.ParseFiles("public/templates/createPost.html")
 	if err != nil {
 		RenderErrorPage(w, http.StatusInternalServerError)
 		return
@@ -121,7 +121,7 @@ func RenderCreatePostPage(w http.ResponseWriter, r *http.Request) {
 
 func CreatePost(w http.ResponseWriter, r *http.Request) {
 	ServerResp.Err = errResp{}
-	template, err := template.ParseFiles("templates/createPost.html")
+	template, err := template.ParseFiles("public/templates/createPost.html")
 	if err != nil {
 		fmt.Println("FUCK109", err)
 
@@ -205,7 +205,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 // add category to bufferPost
 func CreatePostCategories(w http.ResponseWriter, r *http.Request) {
 	ServerResp.Err = errResp{}
-	_, err := template.ParseFiles("templates/createPost.html")
+	_, err := template.ParseFiles("public/templates/createPost.html")
 	link := "/createpostpage/" + ServerResp.CurrentUser.Name
 	if err != nil {
 		RenderErrorPage(w, http.StatusInternalServerError)
@@ -281,7 +281,7 @@ func CreatePostCategories(w http.ResponseWriter, r *http.Request) {
 // delete category to bufferPost
 func DeletePostCategory(w http.ResponseWriter, r *http.Request) {
 	ServerResp.Err = errResp{}
-	_, err := template.ParseFiles("templates/createPost.html")
+	_, err := template.ParseFiles("public/templates/createPost.html")
 	link := "/createpostpage/" + ServerResp.CurrentUser.Name
 	if err != nil {
 		RenderErrorPage(w, http.StatusInternalServerError)
