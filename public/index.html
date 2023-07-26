@@ -85,7 +85,7 @@
   <div id="log-in-popup" class="popup" {{ if and (ne .Err nil) (eq .Err.ErrorCode 2) }} style="display: block;" {{ end
     }}>
     <p class="title-for-popups">log in to forum</p>
-    <form class="sign-up-log-in-form" action="/.netlify/functions/login" method="POST">
+    <form class="sign-up-log-in-form" action="/login" method="POST">
       <label for="email-address-log-in">email address:</label>
       <input class="form-input" type="email" id="email-address-log-in" name="email-address-log-in" required>
       <label for="password-log-in">Password:</label>
